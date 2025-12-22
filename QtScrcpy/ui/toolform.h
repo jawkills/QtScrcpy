@@ -33,7 +33,6 @@ protected:
     void hideEvent(QHideEvent *event);
 
 private slots:
-    void on_fullScreenBtn_clicked();
     void on_returnBtn_clicked();
     void on_homeBtn_clicked();
     void on_menuBtn_clicked();
@@ -44,21 +43,21 @@ private slots:
     void on_volumeDownBtn_clicked();
     void on_closeScreenBtn_clicked();
     void on_expandNotifyBtn_clicked();
-    void on_touchBtn_clicked();
     void on_groupControlBtn_clicked();
     void on_openScreenBtn_clicked();
-    void on_clipboardBtn_clicked();
+    void on_toggleExpandBtn_clicked();
 
 private:
     void initStyle();
     void updateGroupControl();
+    void updateToolbarState();
 
 private:
     Ui::ToolForm *ui;
     QPoint m_dragPosition;
     QString m_serial;
-    bool m_showTouch = false;
     bool m_isHost = false;
+    bool m_isExpanded = false;
 };
 
 #endif // TOOLFORM_H

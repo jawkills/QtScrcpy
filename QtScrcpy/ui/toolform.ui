@@ -21,6 +21,16 @@
     <number>30</number>
    </property>
    <item>
+    <widget class="QPushButton" name="toggleExpandBtn">
+     <property name="toolTip">
+      <string>expand/collapse toolbar</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="groupControlBtn">
      <property name="toolTip">
       <string>group control</string>
@@ -30,16 +40,7 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QPushButton" name="fullScreenBtn">
-     <property name="toolTip">
-      <string>full screen</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
+
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -63,16 +64,7 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QPushButton" name="touchBtn">
-     <property name="toolTip">
-      <string>touch switch</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
+
    <item>
     <widget class="QPushButton" name="openScreenBtn">
      <property name="toolTip">
@@ -173,16 +165,7 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QPushButton" name="clipboardBtn">
-     <property name="toolTip">
-      <string>copy clipboard text</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    </item>
+
   </layout>
  </widget>
  <resources/>

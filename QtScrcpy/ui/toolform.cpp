@@ -18,6 +18,7 @@ ToolForm::ToolForm(QWidget *adsorbWidget, AdsorbPositions adsorbPos) : MagneticW
     updateGroupControl();
 
     initStyle();
+    updateToolbarState();
 }
 
 ToolForm::~ToolForm()
@@ -37,7 +38,7 @@ bool ToolForm::isHost()
 
 void ToolForm::initStyle()
 {
-    IconHelper::Instance()->SetIcon(ui->fullScreenBtn, QChar(0xf0b2), 15);
+    IconHelper::Instance()->SetIcon(ui->toggleExpandBtn, QChar(0xf078), 15); // chevron-down
     IconHelper::Instance()->SetIcon(ui->menuBtn, QChar(0xf096), 15);
     IconHelper::Instance()->SetIcon(ui->homeBtn, QChar(0xf1db), 15);
     //IconHelper::Instance()->SetIcon(ui->returnBtn, QChar(0xf104), 15);
@@ -50,9 +51,7 @@ void ToolForm::initStyle()
     IconHelper::Instance()->SetIcon(ui->powerBtn, QChar(0xf011), 15);
     IconHelper::Instance()->SetIcon(ui->expandNotifyBtn, QChar(0xf103), 15);
     IconHelper::Instance()->SetIcon(ui->screenShotBtn, QChar(0xf0c4), 15);
-    IconHelper::Instance()->SetIcon(ui->touchBtn, QChar(0xf111), 15);
     IconHelper::Instance()->SetIcon(ui->groupControlBtn, QChar(0xf0c0), 15);
-    IconHelper::Instance()->SetIcon(ui->clipboardBtn, QChar(0xf0c5), 15);
 }
 
 void ToolForm::updateGroupControl()
@@ -64,6 +63,29 @@ void ToolForm::updateGroupControl()
     }
 
     GroupController::instance().updateDeviceState(m_serial);
+}
+
+void ToolForm::updateToolbarState()
+{
+    // Update toggle button icon
+    if (m_isExpanded) {
+        IconHelper::Instance()->SetIcon(ui->toggleExpandBtn, QChar(0xf077), 15); // chevron-up
+    } else {
+        IconHelper::Instance()->SetIcon(ui->toggleExpandBtn, QChar(0xf078), 15); // chevron-down
+    }
+
+    // Tombol yang disembunyikan saat minimized
+    ui->expandNotifyBtn->setVisible(m_isExpanded);
+    ui->openScreenBtn->setVisible(m_isExpanded);
+    ui->closeScreenBtn->setVisible(m_isExpanded);
+    ui->volumeUpBtn->setVisible(m_isExpanded);
+    ui->volumeDownBtn->setVisible(m_isExpanded);
+    ui->appSwitchBtn->setVisible(m_isExpanded);
+    ui->menuBtn->setVisible(m_isExpanded);
+    ui->screenShotBtn->setVisible(m_isExpanded);
+
+    // Resize window to fit content
+    adjustSize();
 }
 
 void ToolForm::mousePressEvent(QMouseEvent *event)
@@ -105,16 +127,6 @@ void ToolForm::hideEvent(QHideEvent *event)
 {
     Q_UNUSED(event)
     qDebug() << "hide event";
-}
-
-void ToolForm::on_fullScreenBtn_clicked()
-{
-    auto device = qsc::IDeviceManage::getInstance().getDevice(m_serial);
-    if (!device) {
-        return;
-    }
-
-    dynamic_cast<VideoForm*>(parent())->switchFullScreen();
 }
 
 void ToolForm::on_returnBtn_clicked()
@@ -207,21 +219,16 @@ void ToolForm::on_expandNotifyBtn_clicked()
     device->expandNotificationPanel();
 }
 
-void ToolForm::on_touchBtn_clicked()
-{
-    auto device = qsc::IDeviceManage::getInstance().getDevice(m_serial);
-    if (!device) {
-        return;
-    }
-
-    m_showTouch = !m_showTouch;
-    device->showTouch(m_showTouch);
-}
-
 void ToolForm::on_groupControlBtn_clicked()
 {
     m_isHost = !m_isHost;
     updateGroupControl();
+}
+
+void ToolForm::on_toggleExpandBtn_clicked()
+{
+    m_isExpanded = !m_isExpanded;
+    updateToolbarState();
 }
 
 void ToolForm::on_openScreenBtn_clicked()
@@ -231,13 +238,4 @@ void ToolForm::on_openScreenBtn_clicked()
         return;
     }
     device->setDisplayPower(true);
-}
-
-void ToolForm::on_clipboardBtn_clicked()
-{
-    auto device = qsc::IDeviceManage::getInstance().getDevice(m_serial);
-    if (!device) {
-        return;
-    }
-    device->requestDeviceClipboard();
 }

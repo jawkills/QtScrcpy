@@ -54,6 +54,8 @@ private slots:
     void on_recordScreenCheck_clicked(bool checked);
     void on_usbConnectBtn_clicked();
     void on_wifiConnectBtn_clicked();
+    void on_connectAllBtn_clicked();
+    void on_disconnectAllBtn_clicked();
     void on_connectedPhoneList_itemDoubleClicked(QListWidgetItem *item);
     void on_updateNameBtn_clicked();
     void on_useSingleModeCheck_clicked();

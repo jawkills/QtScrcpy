@@ -732,6 +732,29 @@ void Dialog::on_connectedPhoneList_itemDoubleClicked(QListWidgetItem *item)
     on_startServerBtn_clicked();
 }
 
+void Dialog::on_connectAllBtn_clicked()
+{
+    int count = ui->connectedPhoneList->count();
+    if (count == 0) {
+        outLog("No devices found in list");
+        return;
+    }
+
+    outLog("Connecting all devices...", false);
+
+    for (int i = 0; i < count; ++i) {
+        ui->serialBox->setCurrentIndex(i);
+        on_startServerBtn_clicked();
+        delayMs(500);
+    }
+}
+
+void Dialog::on_disconnectAllBtn_clicked()
+{
+    outLog("Disconnecting all devices...", false);
+    on_stopAllServerBtn_clicked();
+}
+
 void Dialog::on_updateNameBtn_clicked()
 {
     if (ui->serialBox->count() != 0) {
