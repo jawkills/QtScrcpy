@@ -46,12 +46,6 @@ jobs:
       plantform-des: win
     # 步骤
     steps:
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.qt-install-path }}/${{ matrix.qt-arch-install }}
-          key: ${{ runner.os }}/${{ matrix.qt-ver }}/${{ matrix.qt-arch }}        
       # 安装Qt
       - name: Install Qt
         # 使用外部action。这个action专门用来安装Qt
@@ -63,7 +57,7 @@ jobs:
           target: desktop
           # Architecture for Windows/Android
           arch: ${{ matrix.qt-arch }}
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          cache: true
       # 拉取代码
       - uses: actions/checkout@v2
         with:
