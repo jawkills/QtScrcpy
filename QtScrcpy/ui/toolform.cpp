@@ -2,6 +2,9 @@
 #include <QHideEvent>
 #include <QMouseEvent>
 #include <QShowEvent>
+#include <QClipboard>
+#include <QApplication>
+#include <QRandomGenerator>
 
 #include "iconhelper.h"
 #include "toolform.h"
@@ -52,6 +55,7 @@ void ToolForm::initStyle()
     IconHelper::Instance()->SetIcon(ui->expandNotifyBtn, QChar(0xf103), 15);
     IconHelper::Instance()->SetIcon(ui->screenShotBtn, QChar(0xf0c4), 15);
     IconHelper::Instance()->SetIcon(ui->groupControlBtn, QChar(0xf0c0), 15);
+    IconHelper::Instance()->SetIcon(ui->randomDataBtn, QChar(0xf2c2), 15); // address-card icon
 }
 
 void ToolForm::updateGroupControl()
@@ -75,7 +79,6 @@ void ToolForm::updateToolbarState()
     }
 
     // Tombol yang disembunyikan saat minimized
-    ui->expandNotifyBtn->setVisible(m_isExpanded);
     ui->openScreenBtn->setVisible(m_isExpanded);
     ui->closeScreenBtn->setVisible(m_isExpanded);
     ui->volumeUpBtn->setVisible(m_isExpanded);
@@ -238,4 +241,66 @@ void ToolForm::on_openScreenBtn_clicked()
         return;
     }
     device->setDisplayPower(true);
+}
+
+QString ToolForm::generateRandomIndonesianData()
+{
+    // Daftar nama depan Indonesia
+    QStringList namaDepan = {
+        "Adi", "Agus", "Ahmad", "Andi", "Bambang", "Budi", "Cahyo", "Dedi", "Dewi", "Eka",
+        "Fajar", "Fitri", "Gunawan", "Hadi", "Indra", "Joko", "Kartika", "Lestari", "Maya", "Nia",
+        "Putra", "Putri", "Rahmat", "Rina", "Sari", "Siti", "Sri", "Surya", "Tono", "Wati",
+        "Yanto", "Yuni", "Zainal", "Ratna", "Nurul", "Dian", "Hendra", "Irwan", "Kusuma", "Lina"
+    };
+
+    // Daftar nama belakang Indonesia
+    QStringList namaBelakang = {
+        "Pratama", "Saputra", "Wijaya", "Kusuma", "Santoso", "Hidayat", "Permana", "Nugraha",
+        "Setiawan", "Wibowo", "Susanto", "Hartono", "Suryadi", "Purnama", "Ramadhan", "Firmansyah",
+        "Kurniawan", "Prasetyo", "Utomo", "Wahyudi", "Sugiarto", "Handoko", "Budiman", "Gunawan"
+    };
+
+    // Daftar jalan
+    QStringList jalan = {
+        "Jl. Sudirman", "Jl. Thamrin", "Jl. Gatot Subroto", "Jl. Merdeka", "Jl. Diponegoro",
+        "Jl. Ahmad Yani", "Jl. Pahlawan", "Jl. Kartini", "Jl. Imam Bonjol", "Jl. Veteran",
+        "Jl. Pemuda", "Jl. Asia Afrika", "Jl. Cendrawasih", "Jl. Mawar", "Jl. Melati",
+        "Jl. Kenanga", "Jl. Anggrek", "Jl. Dahlia", "Jl. Flamboyan", "Jl. Bougenville"
+    };
+
+    // Daftar kota Indonesia
+    QStringList kota = {
+        "Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang",
+        "Tangerang", "Depok", "Bekasi", "Bogor", "Malang", "Yogyakarta", "Solo", "Denpasar",
+        "Balikpapan", "Banjarmasin", "Pontianak", "Manado", "Padang", "Pekanbaru", "Batam"
+    };
+
+    // Daftar provinsi
+    QStringList provinsi = {
+        "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Banten", "DIY Yogyakarta",
+        "Sumatera Utara", "Sumatera Barat", "Sumatera Selatan", "Kalimantan Timur", "Kalimantan Selatan",
+        "Sulawesi Selatan", "Sulawesi Utara", "Bali", "Riau", "Kepulauan Riau"
+    };
+
+    QRandomGenerator *rng = QRandomGenerator::global();
+
+    QString nama = namaDepan[rng->bounded(namaDepan.size())] + " " + namaBelakang[rng->bounded(namaBelakang.size())];
+    QString alamat = jalan[rng->bounded(jalan.size())] + " No. " + QString::number(rng->bounded(1, 200));
+    QString rt = QString::number(rng->bounded(1, 20));
+    QString rw = QString::number(rng->bounded(1, 15));
+    QString kotaTerpilih = kota[rng->bounded(kota.size())];
+    QString provinsiTerpilih = provinsi[rng->bounded(provinsi.size())];
+    QString kodePos = QString::number(rng->bounded(10000, 99999));
+
+    QString result = nama + "\n" + alamat + ", RT " + rt + "/RW " + rw + "\n" + kotaTerpilih + ", " + provinsiTerpilih + " " + kodePos;
+
+    return result;
+}
+
+void ToolForm::on_randomDataBtn_clicked()
+{
+    QString randomData = generateRandomIndonesianData();
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(randomData);
+    qDebug() << "Random data copied to clipboard:\n" << randomData;
 }

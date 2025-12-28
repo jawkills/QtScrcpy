@@ -46,11 +46,13 @@ private slots:
     void on_groupControlBtn_clicked();
     void on_openScreenBtn_clicked();
     void on_toggleExpandBtn_clicked();
+    void on_randomDataBtn_clicked();
 
 private:
     void initStyle();
     void updateGroupControl();
     void updateToolbarState();
+    QString generateRandomIndonesianData();
 
 private:
     Ui::ToolForm *ui;

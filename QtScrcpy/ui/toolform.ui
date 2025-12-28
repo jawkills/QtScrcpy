@@ -55,17 +55,6 @@
     </spacer>
    </item>
    <item>
-    <widget class="QPushButton" name="expandNotifyBtn">
-     <property name="toolTip">
-      <string>expand notify</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-
-   <item>
     <widget class="QPushButton" name="openScreenBtn">
      <property name="toolTip">
       <string>open screen</string>
@@ -156,9 +145,29 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="expandNotifyBtn">
+     <property name="toolTip">
+      <string>expand notify</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="screenShotBtn">
      <property name="toolTip">
       <string>screen shot</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="randomDataBtn">
+     <property name="toolTip">
+      <string>random name &amp; address (copy)</string>
      </property>
      <property name="text">
       <string/>
