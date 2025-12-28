@@ -47,12 +47,14 @@ private slots:
     void on_openScreenBtn_clicked();
     void on_toggleExpandBtn_clicked();
     void on_randomDataBtn_clicked();
+    void on_clipboardBtn_clicked();
 
 private:
     void initStyle();
     void updateGroupControl();
     void updateToolbarState();
     QString generateRandomIndonesianData();
+    QString getDeviceClipboardNumber();
 
 private:
     Ui::ToolForm *ui;

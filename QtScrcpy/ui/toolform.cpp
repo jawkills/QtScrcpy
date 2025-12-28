@@ -5,6 +5,8 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QRandomGenerator>
+#include <QSettings>
+#include <QCoreApplication>
 
 #include "iconhelper.h"
 #include "toolform.h"
@@ -56,6 +58,7 @@ void ToolForm::initStyle()
     IconHelper::Instance()->SetIcon(ui->screenShotBtn, QChar(0xf0c4), 15);
     IconHelper::Instance()->SetIcon(ui->groupControlBtn, QChar(0xf0c0), 15);
     IconHelper::Instance()->SetIcon(ui->randomDataBtn, QChar(0xf2c2), 15); // address-card icon
+    IconHelper::Instance()->SetIcon(ui->clipboardBtn, QChar(0xf0ea), 15); // clipboard icon
 }
 
 void ToolForm::updateGroupControl()
@@ -303,4 +306,26 @@ void ToolForm::on_randomDataBtn_clicked()
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(randomData);
     qDebug() << "Random data copied to clipboard:\n" << randomData;
+}
+
+QString ToolForm::getDeviceClipboardNumber()
+{
+    QString configPath = QCoreApplication::applicationDirPath() + "/config/config.ini";
+    QSettings settings(configPath, QSettings::IniFormat);
+    settings.beginGroup("clipboard");
+    QString number = settings.value(m_serial, "").toString();
+    settings.endGroup();
+    return number;
+}
+
+void ToolForm::on_clipboardBtn_clicked()
+{
+    QString number = getDeviceClipboardNumber();
+    if (number.isEmpty()) {
+        qDebug() << "No clipboard number configured for device:" << m_serial;
+        return;
+    }
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(number);
+    qDebug() << "Device number copied to clipboard:" << number << "for device:" << m_serial;
 }
